@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.tintegro.sic.oauth2.mapper.UserMapper">
+	<resultMap type="pe.com.tintegro.sic.oauth2.dominio.User" id="userResultMap">
+
+		<result property="noLogin" column="no_login" />
+		<result property="noPassword" column="no_passwo" />
+		<result property="noNombre" column="no_nombre" />
+		<result property="noApellido" column="no_apellido" />
+		<result property="noEmail" column="no_email" />
+		<result property="noProfesion" column="no_profe" />
+		<result property="ilActivo" column="il_activo" />
+		<result property="feCreacion" column="fe_creacion" />
+		<result property="ilAccountNonExpired" column="il_account_non_expired" />
+		<result property="ilCredentialsNonExpired" column="il_credential_non_expired" />
+		<result property="ilAccountNonLocked" column="il_account_non_locked" />
+	</resultMap>
+
+	<resultMap type="pe.com.tintegro.sic.oauth2.dominio.Role" id="roleResultMap">
+		<result property="idRole" column="id_rol" />
+		<result property="noRol" column="no_rol" />
+	</resultMap>
+
+	<resultMap type="pe.com.tintegro.sic.oauth2.dominio.CRUDAnswer"
+		id="CRUDResult">
+		<result property="idAnswer" column="id_resulta" />
+		<result property="noAnswer" column="no_mensaje" />
+	</resultMap>
+
+	<select id="loadUserByUsername" resultMap="userResultMap">
+		SELECT * FROM
+		oauth.fn_load_user_by_username( #{noLogin} )
+	</select>
+
+	<select id="loadRolesByUsername" resultMap="roleResultMap">
+		SELECT * FROM
+		oauth.fn_list_role_by_username( #{ noLogin } )
+	</select>
+
+	<select id="obtenerUsuario" resultMap="userResultMap">
+		SELECT * FROM oauth.fn_lista_usuario_to_token(#{noLogin}, #{noPassword},
+		#{noClient})
+	</select>
+
+	<select id="registrarUsuarioMapper" resultMap="CRUDResult">
+		SELECT * from oauth.fn_registrar_usuario_estandar(#{pNoLogin}, #{pNoPassword}, #{pNoNombres}, #{pNoApellidos}, #{pNoEmail},	#{pNoProfe}, #{pNoCodUsuarioCreador},
+		#{pTokenCreador}
+		);
+
+	</select>
+
+	<select id="actualizarUsuarioMapper" resultMap="CRUDResult">
+		SELECT * from oauth.fn_actualizacion_usuario_estandar(
+		#{pNoLogin},
+		#{pNoPassword},
+		#{pNoNombres},
+		#{pNoApellidos},
+		#{pNoEmail},
+		#{pNoProfe},
+		#{pNoCodUsuarioCreador},
+		#{pTokenCreador}
+		);
+
+	</select>
+
+	<select id="actualizarNuevaContrasenaMapper" resultMap="CRUDResult">
+		SELECT * from oauth.fn_actualizacion_nueva_contrasena(
+		#{pNewPassword},
+		#{pCodUsuario},
+		#{pToken}
+		);
+
+	</select>
+
+	<select id="confirmarNuevaContrasenaMapper" resultMap="CRUDResult">
+		SELECT * from oauth.fn_confirmar_cambio_contrasena(
+		#{pCodUsuario},
+		#{pToken}
+		);
+	</select>
+
+</mapper>
+ 

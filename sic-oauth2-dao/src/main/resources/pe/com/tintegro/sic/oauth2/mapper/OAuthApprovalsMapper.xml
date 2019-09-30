@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.tintegro.sic.oauth2.mapper.OAuthApprovalsMapper" >
+	
+
+	<insert id="insert" parameterType="pe.com.tintegro.sic.oauth2.dominio.OAuthApprovals">
+
+		insert into oauth.oauth_approvals (userid, clientid ,scope, status,
+		expiresat, lastmodifiedat) values
+		(#{userId}, #{clientId} , #{scope},
+		#{status}, #{expiresAt}, #{lastModifiedAt})
+	</insert>
+</mapper>

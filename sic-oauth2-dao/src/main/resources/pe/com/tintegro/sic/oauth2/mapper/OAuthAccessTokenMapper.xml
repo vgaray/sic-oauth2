@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.tintegro.sic.oauth2.mapper.OAuthAccessTokenMapper">
+
+	<!-- <insert id="insertarAccessToken" parameterType="pe.com.tintegro.sic.oauth2.dominio.OAuthAccessToken">
+
+		insert into
+		oauth.oauth_access_token
+		(token ,authentication_id ,user_name,
+		client_id, authentication , refresh_token, last_time_use) values
+		(
+		#{token} , #{authenticationId}, #{userName},
+		#{clientId},#{authentication} , #{refreshToken}, #{lastTimeUse})
+
+	</insert>
+
+ -->
+	<resultMap type="pe.com.tintegro.sic.oauth2.dominio.OAuthAccessToken"
+		id="oauthTokenMap">
+		<result property="authenticationId" column="authentication_id" />
+		<result property="tokenId" column="token_id" />
+		<result property="token" column="token" />
+		<result property="clientId" column="client_id" />
+		<result property="userName" column="user_name" />
+		<result property="refreshToken" column="refresh_token" />
+		<result property="lastTimeUse" column="last_time_use" />
+	</resultMap>
+
+	<resultMap type="pe.com.tintegro.sic.oauth2.dominio.CRUDAnswer"
+		id="CRUDResult">
+		<result property="idAnswer" column="id_resulta" />
+		<result property="noAnswer" column="no_mensaje" />
+	</resultMap>
+
+	<select id="obtenerAccessTokenByClientId" resultMap="CRUDResult">
+		SELECT * FROM oauth.fn_lista_access_token(#{clientID}, #{token},#{user_name})
+	</select>
+
+
+	<!-- <update id="actualizarFechaUsoToken" parameterType="java.lang.String">
+		UPDATE oauth.oauth_access_token SET last_time_use = now() where token =
+		#{token}
+	</update>
+ -->
+	<select id="actualizarFechaUsoToken" resultMap="CRUDResult">
+		SELECT * FROM oauth.fn_actualizar_fecha_token(#{token})
+	</select>
+
+	<select id="registrarAccessToken" resultMap="CRUDResult">
+		SELECT * FROM oauth.fn_registrar_token (#{userName},#{token},
+		#{refreshToken},#{authentication}, #{authenticationId}, #{clientId})
+	</select>
+
+</mapper>

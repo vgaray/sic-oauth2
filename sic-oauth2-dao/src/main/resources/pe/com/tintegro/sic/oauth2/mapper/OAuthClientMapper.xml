@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.tintegro.sic.oauth2.mapper.OAuthClientMapper">
+	<resultMap type="pe.com.tintegro.sic.oauth2.dominio.OAuthClientDetails" id="clientResultMap">
+		<result property = "noClientID" column= "no_client_id" />
+		<result property = "noClient" column = "no_client"/>
+		<result property = "noIDsResources" column = "no_ids_resources"/>
+		<result property = "noClientSecret" column = "no_client_secret"/>
+		<result property = "noScope" column = "no_scope"/>
+		<result property = "noAuthorizedGrantTypes" column = "no_authorized_grant_types"/>
+		<result property = "noWebServerRedirectURI" column = "no_web_server_redirect_uri"/>
+		<result property = "noAuthorities" column = "no_authorities"/>
+		<result property = "noAccessTokenValidity" column = "no_access_token_validity"/>
+		<result property = "noRefreshAccessTokenValidity" column = "no_refresh_access_token_validity"/>
+		<result property = "noAditionalInformation" column = "no_aditional_information"/>
+		<result property = "noAutoApprove" column = "no_autoapprove"/>
+	</resultMap>
+	
+	<resultMap type="pe.com.tintegro.sic.oauth2.dominio.CRUDAnswer" id="crudAnswerResultMap">
+		<result property = "idAnswer" column = "id_resulta"/>
+		<result property = "noAnswer" column = "no_mensaje"/>
+	</resultMap>
+	
+	<select id = "loadClientById" resultMap = "clientResultMap">
+		SELECT * FROM oauth.fn_load_client_by_id( #{ noClientID } )
+	</select>
+	
+	<select id = "isClientAvailable" resultMap = "crudAnswerResultMap">
+		SELECT * FROM oauth.fn_is_client_available( #{ noClientID } )
+	</select>
+	
+   <!-- 	<select id="existeClienteDetails" resultMap="clientResultMap">
+	   SELECT * FROM oauth.tb_client_details where
+	    no_client_id = #{noClientID} and no_client_secret  = #{noClientSecret}
+	</select>   
+	 -->
+	 <select id="existeClienteDetails" resultMap="clientResultMap">
+	    SELECT * FROM oauth.fn_lista_client_details(#{noClientID}, #{noClientSecret})
+	</select> 
+	
+</mapper> 
